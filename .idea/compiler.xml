@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="maven-embedder" />
+        <module name="maven-model" />
+        <module name="maven-settings" />
+        <module name="maven-slf4j-provider" />
+        <module name="maven-settings-builder" />
+        <module name="maven-core" />
+        <module name="maven-repository-metadata" />
+        <module name="maven-plugin-api" />
+        <module name="maven-model-builder" />
+        <module name="maven-compat" />
+        <module name="maven-resolver-provider" />
+        <module name="maven-artifact" />
+        <module name="maven-builder-support" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="apache-maven" target="1.8" />
+      <module name="maven" target="1.8" />
+      <module name="maven-artifact" target="1.8" />
+      <module name="maven-builder-support" target="1.8" />
+      <module name="maven-compat" target="1.8" />
+      <module name="maven-core" target="1.8" />
+      <module name="maven-embedder" target="1.8" />
+      <module name="maven-model" target="1.8" />
+      <module name="maven-model-builder" target="1.8" />
+      <module name="maven-plugin-api" target="1.8" />
+      <module name="maven-repository-metadata" target="1.8" />
+      <module name="maven-resolver-provider" target="1.8" />
+      <module name="maven-settings" target="1.8" />
+      <module name="maven-settings-builder" target="1.8" />
+      <module name="maven-slf4j-provider" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
