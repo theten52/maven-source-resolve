@@ -1,0 +1,38 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Actor -> org.codehaus.plexus.classworlds.launcher.Launcher.main: 使用IDEA启动Maven，如执行 mvn validate 命令等。
+org.codehaus.plexus.classworlds.launcher.Launcher.main -> Launcher.mainWithExitCode : 启动mainWithExitCode方法执行启动maven的逻辑。
+Launcher.mainWithExitCode -> Launcher.mainWithExitCode: 创建新的Launcher。
+Launcher.mainWithExitCode -> Launcher.mainWithExitCode: 创建InputStream以准备读取"classworlds.conf"配置。
+Launcher.mainWithExitCode -> Launcher: configure,将配置文件的流InputStream设置到新的Launcher中。
+Launcher.mainWithExitCode <-- Launcher: TODO
+Launcher.mainWithExitCode -> Launcher: launch,启动Maven。
+Launcher -> Launcher.launchEnhanced: launchEnhanced,获取Maven的入口函数，尝试通过String[] args, ClassWorld world参数的main方法启动Maven。
+Launcher.launchEnhanced -> org.apache.maven.cli.MavenCli: 从配置中获取应用的main函数并启动。
+org.apache.maven.cli.MavenCli -> MavenCli: 创建新的MavenCli。
+org.apache.maven.cli.MavenCli -> org.apache.maven.cli.MavenCli: 配置环境变量，注册关闭钩子。
+MavenCli -> doMain: doMain 执行启动方法。
+doMain -> doMain: initialize workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+doMain -> doMain: cli 初始化日志记录器，解析请求参数。
+doMain -> doMain: properties 处理环境变量。
+doMain -> doMain: logging workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+doMain -> doMain: informativeCommands workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+doMain -> doMain: version workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+doMain -> doMain: localContainer workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+doMain -> doMain: commands workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+doMain -> doMain: configure workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+doMain -> doMain: toolchains workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+doMain -> doMain: populateRequest workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+doMain -> doMain: encryption workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+doMain -> doMain: repository workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+doMain -> doMain: execute workingDirectory、multiModuleProjectDirectory、maven.home。校验这些环境变量。
+
+Launcher -> Launcher: launchStandard,获取Maven的入口函数，尝试通过String[] args参数的main方法启动Maven。
+Launcher.mainWithExitCode <-- Launcher: getExitCode,获取exitCode。
+org.codehaus.plexus.classworlds.launcher.Launcher.main <-- Launcher.mainWithExitCode: 返回exitCode。
+Actor <-- org.codehaus.plexus.classworlds.launcher.Launcher.main: 根据exitCode退出系统。
+
+@enduml

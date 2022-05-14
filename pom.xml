@@ -550,6 +550,7 @@ under the License.
                 ! This is a file I created to record source code reading, no license is required.
               -->
               <exclude>BUILD.md</exclude>
+              <exclude>docresources/**</exclude>
             </excludes>
           </configuration>
         </plugin>
