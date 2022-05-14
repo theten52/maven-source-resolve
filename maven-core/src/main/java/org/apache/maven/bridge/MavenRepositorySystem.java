@@ -814,7 +814,7 @@ public class MavenRepositorySystem
     /**
      * Checks the URL to see if this repository refers to an external repository
      *
-     * @param originalRepository
+     * @param originalRepository 原始 repository
      * @return true if external.
      */
     static boolean isExternalRepo( ArtifactRepository originalRepository )
@@ -839,7 +839,7 @@ public class MavenRepositorySystem
     /**
      * Checks the URL to see if this repository refers to a non-localhost repository using HTTP.
      *
-     * @param originalRepository
+     * @param originalRepository 原始 repository
      * @return true if external.
      */
     static boolean isExternalHttpRepo( ArtifactRepository originalRepository )

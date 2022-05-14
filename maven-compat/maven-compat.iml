@@ -9,6 +9,16 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/modello" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/inheritance-repo/t04/maven-test/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/inheritance-repo/t05/maven-test/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/inheritance-repo/t06/maven-test/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/inheritance-repo/t07/maven-test/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/inheritance-repo/t08/maven-test/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/inheritance-repo/t09/maven-test/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/inheritance-repo/t10/maven-test/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/local-repo/maven-test/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/artifact-install" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/repository-system" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />

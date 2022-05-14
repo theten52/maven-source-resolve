@@ -9,6 +9,12 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/modello" isTestSource="false" generated="true" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/projects/project-builder/it0063/jdk/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/projects/project-dependencies-resolver/it0063/jdk/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/imports-repo/t01/maven-test/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/local-repo/maven-test/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/org/apache/maven/execution" />
+      <excludeFolder url="file://$MODULE_DIR$/src/test/resources/remote-repo-2" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
