@@ -18,7 +18,9 @@ mvn -DdistributionTargetDir="~/IdeaProjects/apache-maven-3.8.5-SNAPSHOT" clean p
 ```
 注意 distributionTargetDir 指定的文件夹需要已存在，否则报错。
 
-构建成功后，会在各个子模块的 target 目录下生成模块对应的jar包。
+构建成功后，会在各个子模块的 target 目录下生成模块对应的jar包。接下来即可使用IDEA调试项目了。
+不进行此操作直接使用IDEA调试会各种【java: 找不到符号】问题。
+> 注意：也可以直接执行 `mvn clean package` 命令进行构建操作。 
 
 # 源码调试
 ## 寻找启动类
@@ -62,34 +64,28 @@ exec "$JAVACMD" \
   ${CLASSWORLDS_LAUNCHER} "$@"
 
 ```
-IDEA中使用maven `validate` 命令的参数，供参考：
-```bash
-/Library/Java/JavaVirtualMachines/jdk1.8.0_212.jdk/Contents/Home/bin/java \
--Dmaven.multiModuleProjectDirectory=/Users/abc/IdeaProjects/apache-maven-3.8.5 \
--Dmaven.home=/Users/abc/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/211.6693.111/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3 \
--Dclassworlds.conf=/Users/abc/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/211.6693.111/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/bin/m2.conf \
--Dmaven.ext.class.path=/Users/abc/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/211.6693.111/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven-event-listener.jar \
--javaagent:/Users/abc/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/211.6693.111/IntelliJ IDEA.app/Contents/lib/idea_rt.jar=49875:/Users/abc/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/211.6693.111/IntelliJ IDEA.app/Contents/bin \
--Dfile.encoding=UTF-8 \
--classpath /Users/abc/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/211.6693.111/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/boot/plexus-classworlds.license:/Users/abc/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/211.6693.111/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/boot/plexus-classworlds-2.6.0.jar \
-org.codehaus.classworlds.Launcher \
--Didea.version=2021.1 validate
-```
+
 ### jvm 启动参数
+注意，以下出现的目录中：
++ `/Users/abc/CodeSoftware/maven/apache-maven-3.8.5`（即下文【已安装的maven目录】）是安装在当前系统上可以直接使用的Maven。
++ `/Users/abc/IdeaProjects/apache-maven-3.8.5`（即下文【当前的源码包目录】）是Maven的源码目录，也就是我们当前想要调试的Maven源码的目录。
+
+它们可以是不同版本的Maven。注意不要混淆
+
+参数详解：
 + classpath
   + classpath 不需要，在IDEA环境中会自动加载好此参数。这也是我们能够调试maven源码的关键。  
 
 
 + -Dclassworlds.conf
-```bash
--Dclassworlds.conf=/Users/abc/Library/Application Support/JetBrains/Toolbox/apps/IDEA-U/ch-0/211.6693.111/IntelliJ IDEA.app/Contents/plugins/maven/lib/maven3/bin/m2.conf
-```
+  + maven启动时的classworlds配置，【当前的源码包目录】里没有，我们直接使用【已安装的maven目录】的配置。
 ```bash
 -Dclassworlds.conf=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/bin/m2.conf
 ```
 
 + -Dmaven.home
-  + maven的安装路径
+  + maven的安装路径。理论上来说就是我们的【当前的源码包目录】，考虑到maven运行时可能会从此路径获取一些
+  源码中不存在的配置文件，因此为了简单我们直接将其配置为【已安装的maven目录】。
 ```bash
 -Dmaven.home=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/
 ```
@@ -102,7 +98,7 @@ org.codehaus.classworlds.Launcher \
 ```
 
 + -Dmaven.multiModuleProjectDirectory
-  + maven要操作的“目标项目”的路径。比如我们有个spring-boot的项目，使用`mvn clean`对清理这个项目。那么此时multiModuleProjectDirectory
+  + maven要操作的“目标项目”的路径。比如我们有个spring-boot的项目，使用`mvn clean`对清理这个项目。那么此时`multiModuleProjectDirectory`
     就是指当前这个spring-boot项目的根路径，而不是maven安装的根目录。
 ```bash
 -Dmaven.multiModuleProjectDirectory=/Users/abc/IdeaProjects/apache-maven-3.8.5
@@ -110,7 +106,10 @@ org.codehaus.classworlds.Launcher \
 
 最后，我们汇总一下在IDEA中启动`org.codehaus.plexus.classworlds.launcher.Launcher.main`需要的参数：
 ```bash
--Dclassworlds.conf=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/bin/m2.conf -Dmaven.home=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/ -Dlibrary.jansi.path=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/lib/jansi-native/ -Dmaven.multiModuleProjectDirectory=/Users/abc/IdeaProjects/apache-maven-3.8.5
+-Dclassworlds.conf=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/bin/m2.conf \
+-Dmaven.home=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/ \
+-Dlibrary.jansi.path=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/lib/jansi-native/ \
+-Dmaven.multiModuleProjectDirectory=/Users/abc/IdeaProjects/apache-maven-3.8.5
 ```
 我们将以上参数添加到IDEA的中“VM Options”中，使其成为jvm参数。供程序运行时读取。
 
