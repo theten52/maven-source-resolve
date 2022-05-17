@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%style{%d}{bright,white} %highlight{%-5p} [%style{%t}{bright,blue}] [%style{%40.40C}{bright,yellow}:%style{%4.4L}{bright,yellow}] %style{[%m]%n}{cyan}%style{%throwable}{red}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="CONSOLE"/>
+        </Root>
+
+    </Loggers>
+</Configuration>
