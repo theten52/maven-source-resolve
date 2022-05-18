@@ -21,8 +21,14 @@ mvn -DdistributionTargetDir="~/IdeaProjects/apache-maven-3.8.5-SNAPSHOT" clean p
 注意 distributionTargetDir 指定的文件夹需要已存在，否则报错。
 
 构建成功后，会在各个子模块的 target 目录下生成模块对应的jar包。接下来即可使用IDEA调试项目了。 不进行此操作直接使用IDEA调试会各种【java: 找不到符号】问题。
-> 注意：也可以直接执行 `mvn clean package` 命令进行构建操作。
+> 提示：也可以直接执行 `mvn clean package` 命令进行构建操作。
 
+> 注意：构建时如果出现`lifecycle-mapping`找不到的问题，我们可以参考：[这个网页](https://github.com/BINGOcoder1998/dummy-lifecycle-mapping-plugin) 。或者这样：
+> ```bash
+> git clone https://github.com/BINGOcoder1998/dummy-lifecycle-mapping-plugin.git
+> cd dummy-lifecycle-mapping-plugin
+> mvn install
+> ```
 # 源码调试
 
 ## 寻找启动类
