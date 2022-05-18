@@ -101,7 +101,7 @@ import java.util.List;
 /**
  * 用来启动Maven源码的辅助类。
  *
- * @author wangjin
+ * @author abc
  * @date 2022/5/17
  */
 
@@ -188,10 +188,7 @@ exec "$JAVACMD" \
 我们汇总一下在IDEA中启动`org.codehaus.plexus.classworlds.launcher.Launcher.main`需要的参数：
 
 ```bash
--Dclassworlds.conf=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/bin/m2.conf \
--Dmaven.home=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/ \
--Dlibrary.jansi.path=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/lib/jansi-native/ \
--Dmaven.multiModuleProjectDirectory=/Users/abc/IdeaProjects/apache-maven-3.8.5
+-Dclassworlds.conf=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/bin/m2.conf -Dmaven.home=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/ -Dlibrary.jansi.path=/Users/abc/CodeSoftware/maven/apache-maven-3.8.5/lib/jansi-native/ -Dmaven.multiModuleProjectDirectory=/Users/abc/IdeaProjects/apache-maven-3.8.5
 ```
 
 我们将以上参数添加到IDEA的中“VM Options”中，使其成为jvm参数。供程序运行时读取。
@@ -292,7 +289,7 @@ version=3.8.5
 groupId=org.apache.maven
 artifactId=maven-embedder
 ```
-2. [ERROR] Failed to execute goal org.apache.rat:apache-rat-plugin:0.13:check (rat-check) on project maven: Too many files with unapproved license: 1 See RAT report in: /Users/wangjin/IdeaProjects/apache-maven-3.8.5/target/rat.txt -> [Help 1]
+2. [ERROR] Failed to execute goal org.apache.rat:apache-rat-plugin:0.13:check (rat-check) on project maven: Too many files with unapproved license: 1 See RAT report in: /Users/abc/IdeaProjects/apache-maven-3.8.5/target/rat.txt -> [Help 1]
 + 这是因为我们部分文件没有添加`license`声明所致。我们可以选择给自己新增的文件添加`licence`声明或者将新增的文件或目录忽略掉不进行检查。我们使用如下方式进行忽略：
 ```xml
 <!--此文件为根目录下的pom.xml文件，此插件在pluginManagement下管理-->
