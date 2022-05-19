@@ -15,18 +15,16 @@ Maven原始 [README.md](./BUILD.md) 。
 >
 >> mvn -DdistributionTargetDir="$HOME/app/maven/apache-maven-3.6.x-SNAPSHOT" clean package
 
-我在本地构建时使用了如下命令：
+我在直接使用上述命令在本地构建：
 
 ```bash
-mvn -DdistributionTargetDir="~/IdeaProjects/apache-maven-3.8.5-SNAPSHOT" clean package
+mvn -DdistributionTargetDir="$HOME/app/maven/apache-maven-3.6.x-SNAPSHOT" clean package
 ```
-
-注意 distributionTargetDir 指定的文件夹需要已存在，否则报错。
+构建成功后，会在`$HOME/app/maven/apache-maven-3.6.x-SNAPSHOT`这个文件夹中生成完整的Maven程序。
 
 构建成功后，会在各个子模块的 target 目录下生成模块对应的jar包。接下来即可使用IDEA调试项目了。 不进行此操作直接使用IDEA调试会各种【java: 找不到符号】问题。
-> 提示：也可以直接执行 `mvn clean package` 命令进行构建操作。
 
-> 注意：构建时如果出现`lifecycle-mapping`找不到的问题，我们可以参考：[这个网页](https://github.com/BINGOcoder1998/dummy-lifecycle-mapping-plugin) 。或者这样：
+> （一般不会遇到）注意：构建时如果出现`lifecycle-mapping`找不到的问题，我们可以参考：[这个网页](https://github.com/BINGOcoder1998/dummy-lifecycle-mapping-plugin) 。或者这样：
 > ```bash
 > git clone https://github.com/BINGOcoder1998/dummy-lifecycle-mapping-plugin.git
 > cd dummy-lifecycle-mapping-plugin
