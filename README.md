@@ -72,45 +72,48 @@ org.codehaus.plexus.classworlds.launcher.Launcher#main
 
 ### 新建启动辅助类
 
-我们在`maven-compat/src/test/java/org/apache/maven/`目录下新建`DebugMaven.java`文件，它包含一个main方法， 帮助我们启动当前Maven源码以便调试。代码内容如下:
+我们新建一个module，帮助我们启动 Maven 源码以便调试。
+1. 使用 IDEA 在当前根目录新建一个 Module，名称为`maven-example`。（新 module 的 pom 参考`maven-example/pom.xml`）
+2. 新建启动辅助类`MavenStarter.java`。
 
+`MavenStarter.java`包含一个main方法， 帮助我们启动当前Maven源码以便调试。代码内容如下:
 ```java
 package org.apache.maven;
 
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more contributor license
- * agreements. See the NOTICE file distributed with this work for additional information regarding
- * copyright ownership. The ASF licenses this file to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance with the License. You may obtain a
- * copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
-
-import org.codehaus.plexus.PlexusTestCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * 用来启动Maven源码的辅助类。
- *
- * @author abc
- * @date 2022/5/17
+ * Maven source code debug entrance.
  */
+public class MavenStarter
+{
+    private static final Logger LOG = LoggerFactory.getLogger(MavenStarter.class);
 
-public class DebugMaven extends PlexusTestCase {
-    private static final Logger LOG = LoggerFactory.getLogger(DebugMaven.class);
-
-    public static void main(String[] args) {
+    public static void main( String[] args )
+    {
         LOG.info("===================== Program Arguments ========================");
         RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
         List<String> arguments = bean.getInputArguments();
@@ -127,9 +130,16 @@ public class DebugMaven extends PlexusTestCase {
 
 ```
 
-注意：我们使用了`SLF4J`的依赖，下文会有此依赖的引入说明。
+接下来我们可以使用这个类来辅助我们启动 maven 源码进行调试了。
 
-如何找到启动参数？ TODO源码or命令行文件
+在此之前，我们会遇到两个问题：
+1. 启动参数配置
+2. classpath 路径配置
+
+在下文中我们会一一处理它们。
+
+### 如何找到启动参数？ 
+> TODO源码or命令行文件
 
 ```bash
 exec "$JAVACMD" \
