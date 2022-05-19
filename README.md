@@ -1,4 +1,5 @@
 # 原始README
+
 Maven原始 [README.md](./BUILD.md) 。
 
 # 基础构建
@@ -20,9 +21,10 @@ Maven原始 [README.md](./BUILD.md) 。
 ```bash
 mvn -DdistributionTargetDir="$HOME/app/maven/apache-maven-3.6.x-SNAPSHOT" clean package
 ```
+
 构建成功后，会在`$HOME/app/maven/apache-maven-3.6.x-SNAPSHOT`这个文件夹中生成完整的Maven程序。
 
-构建成功后，会在各个子模块的 target 目录下生成模块对应的jar包。接下来即可使用IDEA调试项目了。 不进行此操作直接使用IDEA调试会各种【java: 找不到符号】问题。
+构建成功后，会在各个子模块的 target 目录下生成模块对应的class文件和其他构建产物。接下来即可使用IDEA调试项目了。 不进行此操作直接使用IDEA调试会各种【java: 找不到符号】问题。
 
 > （一般不会遇到）注意：构建时如果出现`lifecycle-mapping`找不到的问题，我们可以参考：[这个网页](https://github.com/BINGOcoder1998/dummy-lifecycle-mapping-plugin) 。或者这样：
 > ```bash
@@ -30,11 +32,13 @@ mvn -DdistributionTargetDir="$HOME/app/maven/apache-maven-3.6.x-SNAPSHOT" clean 
 > cd dummy-lifecycle-mapping-plugin
 > mvn install
 > ```
+
 # 源码调试
 
 ## 寻找启动类
 
-如何找到启动类？ TODO 通过命令执行文件
+如何找到启动类？
+> TODO 通过命令执行文件
 
 启动类路径：
 
@@ -45,7 +49,7 @@ org.codehaus.plexus.classworlds.launcher.Launcher#main
 启动类内容如下：
 
 ```java
-    @formatter:off
+    //@formatter:off
     public static void main( String[] args )
     {
         try
@@ -61,7 +65,7 @@ org.codehaus.plexus.classworlds.launcher.Launcher#main
             System.exit( 100 );
         }
     }
-    @formatter:on
+    //@formatter:on
 ```
 
 ## 开始调试
@@ -191,11 +195,20 @@ exec "$JAVACMD" \
 
 我们将以上参数添加到IDEA的中“VM Options”中，使其成为jvm参数。供程序运行时读取。
 
-另外我们需要给它添加程序启动参数`Program Arguments`。参考如下：假如我们需要调试一下`mvn validate`方式对应的源码执行过程。那么我们需要将`validate`
-添加到“Program Arguments”中即可，之后我们如果需要测试不同的maven参数，修改这个值即可。
+### Program Arguments 程序参数
 
-+ 传递给Maven的待执行的命令
-    + 传递给maven的命令参数。比如平时我们使用`mvn clean`执行清理工作，那么此时我们就要将`clean`配置在`Program Arguments`中。
+另外我们需要给它添加Maven执行时需要的参数参数。假如我们需要调试一下`mvn validate`方式对应的源码执行过程。那么我们需要将`validate`
+添加到`Program Arguments`中即可。之后我们如果需要测试不同的maven参数，修改这个值即可。
+
++ 传递给Maven的待执行的命令【1】
+    + 比如平时我们使用`mvn validate`执行清理工作，那么此时我们就要将`validate`配置在`Program Arguments`中。
+
+```bash
+validate
+```
+
++ 传递给Maven的待执行的命令【2】
+    + 或者我们需要调试`mvn clean install -DskipTests`命令，那么此时我们就要将`clean install -DskipTests`配置在`Program Arguments`中。
 
 ```bash
 clean install -DskipTests
@@ -207,13 +220,13 @@ clean install -DskipTests
       保持一致）
 
 ```bash
--f /Users/abc/IdeaProjects/demo/
+-f /Users/abc/IdeaProjects/spring-boot-example/
 ```
 
 汇总一下`Program Arguments`的参数配置。
 
 ```bash
-clean install -DskipTests -f /Users/abc/IdeaProjects/demo/
+clean install -DskipTests -f /Users/abc/IdeaProjects/spring-boot-example/
 ```
 
 整个配置如下图所示：
@@ -287,10 +300,16 @@ version=3.8.5
 groupId=org.apache.maven
 artifactId=maven-embedder
 ```
-2. [ERROR] Failed to execute goal org.apache.rat:apache-rat-plugin:0.13:check (rat-check) on project maven: Too many files with unapproved license: 1 See RAT report in: /Users/abc/IdeaProjects/apache-maven-3.8.5/target/rat.txt -> [Help 1]
+
+2. [ERROR] Failed to execute goal org.apache.rat:apache-rat-plugin:0.13:check (rat-check) on project maven: Too many
+   files with unapproved license: 1 See RAT report in: /Users/abc/IdeaProjects/apache-maven-3.8.5/target/rat.txt
+   -> [Help 1]
+
 + 这是因为我们部分文件没有添加`license`声明所致。我们可以选择给自己新增的文件添加`licence`声明或者将新增的文件或目录忽略掉不进行检查。我们使用如下方式进行忽略：
+
 ```xml
-<!--此文件为根目录下的pom.xml文件，此插件在pluginManagement下管理-->
+          <!--@formatter:off-->
+          <!--此文件为根目录下的pom.xml文件，此插件在pluginManagement下管理-->
 
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
@@ -312,21 +331,25 @@ artifactId=maven-embedder
               <exclude>docresources/**</exclude>
             </excludes>
           </configuration>
-        
+          <!--@formatter:off-->
 ```
 
 # 添加日志依赖
+
 启动项目后我们发现此时没有正常的日志依赖。因此，我们添加日志相关依赖。
+
 + 在源码根目录的`pom.xml`文件中添加依赖如下：
+
 ```xml
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.17.2</version>
-    </dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-slf4j-impl</artifactId>
+    <version>2.17.2</version>
+</dependency>
 ```
-同时在`maven-compat/src/test/resources/`文件夹下添加`log4j2.xml`文件。
-内容如下：
+
+同时在`maven-compat/src/test/resources/`文件夹下添加`log4j2.xml`文件。 内容如下：
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
@@ -344,4 +367,5 @@ artifactId=maven-embedder
     </Loggers>
 </Configuration>
 ```
+
 至此，日志依赖配置完成。
