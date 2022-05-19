@@ -233,16 +233,17 @@ clean install -DskipTests
       保持一致）
 
 ```bash
--f /Users/abc/IdeaProjects/spring-boot-example/
+-f /Users/abc/IdeaProjects/spring-boot-demo/
 ```
 
 汇总一下`Program Arguments`的参数配置。
 
 ```bash
-clean install -DskipTests -f /Users/abc/IdeaProjects/spring-boot-example/
+clean install -DskipTests -f /Users/abc/IdeaProjects/spring-boot-demo/
 ```
 
 整个配置如下图所示：
+
 ![IDEA 启动配置](./docresources/idea-startup-config.png "IDEA 启动配置")
 
 ### classpath 配置
@@ -257,6 +258,8 @@ clean install -DskipTests -f /Users/abc/IdeaProjects/spring-boot-example/
 > 其次，有了上面的配置IDEA应该能够正常的处理classpath了，但是如果还存在类找不大的问 题。那么请打开IDEA的`Project Structure`配置面板（Field-> Project Structure）,
 找到`Project Settings -> Modules`，然后选择`maven-example`module，再选择
 `dependencies`；点击页面的“+”号，选择【1 JARs or Directories】，选择某个module 下的`target/classes/`文件夹并添加保存。重复这个操作，直到所有的module都添加完成。
+
+![添加文件夹到classpath](./docresources/add-dir-to-classpath.png "添加文件夹到classpath")
 
 OK，这个方法太笨了。有个偷懒的方法，就是将以下代码复制你本地的`maven-example/maven-example.iml`文件中。
 这个操作等效于我们在配置页面手动添加文件夹到module中。
