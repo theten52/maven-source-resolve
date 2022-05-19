@@ -73,10 +73,12 @@ org.codehaus.plexus.classworlds.launcher.Launcher#main
 ### 新建启动辅助类
 
 我们新建一个module，帮助我们启动 Maven 源码以便调试。
+
 1. 使用 IDEA 在当前根目录新建一个 Module，名称为`maven-example`。（新 module 的 pom 参考`maven-example/pom.xml`）
 2. 新建启动辅助类`MavenStarter.java`。
 
 `MavenStarter.java`包含一个main方法， 帮助我们启动当前Maven源码以便调试。代码内容如下:
+
 ```java
 package org.apache.maven;
 
@@ -102,18 +104,17 @@ package org.apache.maven;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Maven source code debug entrance.
  */
-public class MavenStarter
-{
+public class MavenStarter {
     private static final Logger LOG = LoggerFactory.getLogger(MavenStarter.class);
 
-    public static void main( String[] args )
-    {
+    public static void main(String[] args) {
         LOG.info("===================== Program Arguments ========================");
         RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
         List<String> arguments = bean.getInputArguments();
@@ -133,12 +134,14 @@ public class MavenStarter
 接下来我们可以使用这个类来辅助我们启动 maven 源码进行调试了。
 
 在此之前，我们会遇到两个问题：
+
 1. 启动参数配置
 2. classpath 路径配置
 
 在下文中我们会一一处理它们。
 
-### 如何找到启动参数？ 
+### 如何找到启动参数？
+
 > TODO源码or命令行文件
 
 ```bash
@@ -242,6 +245,42 @@ clean install -DskipTests -f /Users/abc/IdeaProjects/spring-boot-example/
 整个配置如下图所示：
 ![IDEA 启动配置](./docresources/idea-startup-config.png "IDEA 启动配置")
 
+### classpath 配置
+
+一般情况下，IDEA会自动给我们处理好项目依赖和 classpath。但是在实际调试中有可能会出现 加载的 classpath 不完整导致的启动出错。
+
+因此我们在此介绍一下如何在IDEA下处理 classpath。
+
+>首先，我们在`maven-example`的`pom`中依赖了所有的Maven子module。这样做是为了在 代码执行过程中，IDEA会直接执行具体module的`target/classes`下的class，而不是去
+执行对应jar包的代码，方便我们修改完源码后观察代码行为。
+
+> 其次，有了上面的配置IDEA应该能够正常的处理classpath了，但是如果还存在类找不大的问 题。那么请打开IDEA的`Project Structure`配置面板（Field-> Project Structure）,
+找到`Project Settings -> Modules`，然后选择`maven-example`module，再选择
+`dependencies`；点击页面的“+”号，选择【1 JARs or Directories】，选择某个module 下的`target/classes/`文件夹并添加保存。重复这个操作，直到所有的module都添加完成。
+
+OK，这个方法太笨了。有个偷懒的方法，就是将以下代码复制你本地的`maven-example/maven-example.iml`文件中。
+这个操作等效于我们在配置页面手动添加文件夹到module中。
+
+```xml
+<CLASSES>
+    <root url="file://$MODULE_DIR$/../maven-artifact/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-builder-support/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-compat/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-core/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-embedder/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-model/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-model-builder/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-plugin-api/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-repository-metadata/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-resolver-provider/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-settings/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-settings-builder/target/classes"/>
+    <root url="file://$MODULE_DIR$/../maven-slf4j-provider/target/classes"/>
+</CLASSES>
+```
+`maven-example/maven-example.iml`的整个文件内容可以参考`docresources/helper/maven-example.iml.bak.xml`文件。
+但是其实我们只关心上面代码片段中列出的`CLASSES`节点下的配置就可以了。
+
 至此，我们即可使用IDEA启动项目。但是可能会出现问题，请参考下文【启动时问题修复】。
 
 # 启动时问题修复
@@ -344,7 +383,7 @@ artifactId=maven-embedder
           <!--@formatter:off-->
 ```
 
-# 添加日志依赖
+# ~~添加日志依赖~~(不需要这一步，我们使用自带的logback日志即可)
 
 启动项目后我们发现此时没有正常的日志依赖。因此，我们添加日志相关依赖。
 
