@@ -547,6 +547,11 @@ under the License.
               -->
               <exclude>src/main/appended-resources/licenses/EPL-1.0.txt</exclude>
               <exclude>src/main/appended-resources/licenses/unrecognized-javax.annotation-api-1.2.txt</exclude>
+              <!--
+                ! This is a file I created to record source code reading, no license is required.
+              -->
+              <exclude>BUILD.md</exclude>
+              <exclude>docresources/**</exclude>
             </excludes>
           </configuration>
         </plugin>
