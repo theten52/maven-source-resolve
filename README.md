@@ -51,8 +51,9 @@ mvn -DdistributionTargetDir="$HOME/app/maven/apache-maven-3.6.x-SNAPSHOT" clean 
 + 任意一个Maven项目。
 + 已经安装好的Maven（需要知道版本）。可以执行`mvn`和`mvnDebug`命令。
 + 和安装好的Maven同版本的Maven源码。在这个地方下载
-  [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi)
+  [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi) 。
   可以下载src.tar.gz或者src.zip结尾的源码解压到本地。
+  或者从github上拉取源码：`git clone https://github.com/apache/maven.git` 。
 #### 调试步骤
 1. 在IDEA中打开项目源码。
 2. 在任意Maven项目中执行`mvnDebug clean`命令。 
