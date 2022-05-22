@@ -2,6 +2,10 @@
 
 Maven原始 [README.md](./BUILD.md) 。
 
+# 一些参考文章
+
+[参考文章](./docresources/doc/REFERENCE.md)
+
 # 基础构建
 
 按照原始 [README.md](./BUILD.md) 中的说明：
