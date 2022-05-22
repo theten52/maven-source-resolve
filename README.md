@@ -35,6 +35,49 @@ mvn -DdistributionTargetDir="$HOME/app/maven/apache-maven-3.6.x-SNAPSHOT" clean 
 
 # 源码调试
 
+## 超级简单的调试方式-使用`mvnDebug`
+
+我们在Maven的安装目录的bin文件夹下可以发现一个`mvnDebug`的脚本文件。
+
+如果我们的本地Maven安装正确，
+那么我们可以直接使用`mvnDebug`命令。它的使用方式和参数和`mvn`命令一致。在项目的根目录直接执行即可。
+
+比如我们想要调试`clean`命令，那么我们任意找到一个Maven项目，在其根目录执行`mvnDebug clean`，即可
+以调试方式启动Maven。
+
+### 使用方式
+#### 准备条件
++ 一个IDEA。
++ 任意一个Maven项目。
++ 已经安装好的Maven（需要知道版本）。可以执行`mvn`和`mvnDebug`命令。
++ 和安装好的Maven同版本的Maven源码。在这个地方下载
+  [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi)
+  可以下载src.tar.gz或者src.zip结尾的源码解压到本地。
+#### 调试步骤
+1. 在IDEA中打开项目源码。
+2. 在任意Maven项目中执行`mvnDebug clean`命令。 
+   此时，我们可以看到在命令行里如下输出：
+   
+   ![mvnDebug-1](./docresources/img/mvn-debug-start.png)
+3. 在IDEA中新增远程调试启动项。如下：
+   
+   ![mvnDebug-2](./docresources/img/mvn-debug-idea-config.png)
+4. Maven入口代码处打上断点。在`org.codehaus.plexus.classworlds.launcher.Launcher.main`方法内开始
+   处打上断点。
+5. 点击IDEA的Debug图标：
+   
+   ![mvDebug-3](./docresources/img/mvn-debug-idea-start.png)
+   
+   接下来即可看到已经进入到断点：
+   
+   ![mvDebug-4](./docresources/img/mvn-debug-idea-breakpoint.png)
+   
+注意：
++ 调试的输出会在执行`mvnDebug clean`的Terminal中输出。而不会在IDEA的Console中输出。
++ 这种调试方式当我们修改了源码不会再调试过程中生效。
+
+如果想要修改源码并在调试中测试，则可以使用下文的调试方式。
+
 ## 寻找启动类
 
 如何找到启动类？
