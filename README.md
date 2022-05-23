@@ -4,7 +4,8 @@ Maven原始 [README.md](./BUILD.md) 。
 
 # 一些参考文章
 
-[参考文章](./docresources/doc/REFERENCE.md)
++ [plexus-classwords介绍](./docresources/doc/01-plexus-classworlds.md)
++ [参考文章](./docresources/doc/REFERENCE.md)
 
 # 基础构建
 
@@ -43,41 +44,41 @@ mvn -DdistributionTargetDir="$HOME/app/maven/apache-maven-3.6.x-SNAPSHOT" clean 
 
 我们在Maven的安装目录的bin文件夹下可以发现一个`mvnDebug`的脚本文件。
 
-如果我们的本地Maven安装正确，
-那么我们可以直接使用`mvnDebug`命令。它的使用方式和参数和`mvn`命令一致。在项目的根目录直接执行即可。
+如果我们的本地Maven安装正确， 那么我们可以直接使用`mvnDebug`命令。它的使用方式和参数和`mvn`命令一致。在项目的根目录直接执行即可。
 
-比如我们想要调试`clean`命令，那么我们任意找到一个Maven项目，在其根目录执行`mvnDebug clean`，即可
-以调试方式启动Maven。
+比如我们想要调试`clean`命令，那么我们任意找到一个Maven项目，在其根目录执行`mvnDebug clean`，即可 以调试方式启动Maven。
 
 ### 使用方式
+
 #### 准备条件
+
 + 一个IDEA。
 + 任意一个Maven项目。
 + 已经安装好的Maven（需要知道版本）。可以执行`mvn`和`mvnDebug`命令。
 + 和安装好的Maven同版本的Maven源码。在这个地方下载
-  [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi) 。
-  可以下载src.tar.gz或者src.zip结尾的源码解压到本地。
+  [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi) 。 可以下载src.tar.gz或者src.zip结尾的源码解压到本地。
   或者从github上拉取源码：`git clone https://github.com/apache/maven.git` 。
+
 #### 调试步骤
+
 1. 在IDEA中打开项目源码。
-2. 在任意Maven项目中执行`mvnDebug clean`命令。 
-   此时，我们可以看到在命令行里如下输出：
-   
+2. 在任意Maven项目中执行`mvnDebug clean`命令。 此时，我们可以看到在命令行里如下输出：
+
    ![mvnDebug-1](./docresources/img/mvn-debug-start.png)
 3. 在IDEA中新增远程调试启动项。如下：
-   
+
    ![mvnDebug-2](./docresources/img/mvn-debug-idea-config.png)
-4. Maven入口代码处打上断点。在`org.codehaus.plexus.classworlds.launcher.Launcher.main`方法内开始
-   处打上断点。
+4. Maven入口代码处打上断点。在`org.codehaus.plexus.classworlds.launcher.Launcher.main`方法内开始 处打上断点。
 5. 点击IDEA的Debug图标：
-   
+
    ![mvDebug-3](./docresources/img/mvn-debug-idea-start.png)
-   
+
    接下来即可看到已经进入到断点：
-   
+
    ![mvDebug-4](./docresources/img/mvn-debug-idea-breakpoint.png)
-   
+
 注意：
+
 + 调试的输出会在执行`mvnDebug clean`的Terminal中输出。而不会在IDEA的Console中输出。
 + 这种调试方式当我们修改了源码不会再调试过程中生效。
 
@@ -300,19 +301,17 @@ clean install -DskipTests -f /Users/abc/IdeaProjects/spring-boot-demo/
 
 因此我们在此介绍一下如何在IDEA下处理 classpath。
 
->首先，我们在`maven-example`的`pom`中依赖了所有的Maven子module。这样做是为了在 代码执行过程中，IDEA会直接执行具体module的`target/classes`下的class，而不是去
-执行对应jar包的代码，方便我们修改完源码后观察代码行为。
+> 首先，我们在`maven-example`的`pom`中依赖了所有的Maven子module。这样做是为了在 代码执行过程中，IDEA会直接执行具体module的`target/classes`下的class，而不是去 执行对应jar包的代码，方便我们修改完源码后观察代码行为。
 
-> 其次，有了上面的配置IDEA应该能够正常的处理classpath了，但是如果还存在类找不大的问 题。那么请打开IDEA的`Project Structure`配置面板（Field-> Project Structure）,
-找到`Project Settings -> Modules`，然后选择`maven-example`module，再选择
+> 其次，有了上面的配置IDEA应该能够正常的处理classpath了，但是如果还存在类找不大的问 题。那么请打开IDEA的`Project Structure`配置面板（Field-> Project Structure）, 找到`Project Settings -> Modules`，然后选择`maven-example`module，再选择
 `dependencies`；点击页面的“+”号，选择【1 JARs or Directories】，选择某个module 下的`target/classes/`文件夹并添加保存。重复这个操作，直到所有的module都添加完成。
 
 ![添加文件夹到classpath](./docresources/add-dir-to-classpath.png "添加文件夹到classpath")
 
-OK，这个方法太笨了。有个偷懒的方法，就是将以下代码复制你本地的`maven-example/maven-example.iml`文件中。
-这个操作等效于我们在配置页面手动添加文件夹到module中。
+OK，这个方法太笨了。有个偷懒的方法，就是将以下代码复制你本地的`maven-example/maven-example.iml`文件中。 这个操作等效于我们在配置页面手动添加文件夹到module中。
 
 ```xml
+
 <CLASSES>
     <root url="file://$MODULE_DIR$/../maven-artifact/target/classes"/>
     <root url="file://$MODULE_DIR$/../maven-builder-support/target/classes"/>
@@ -329,6 +328,7 @@ OK，这个方法太笨了。有个偷懒的方法，就是将以下代码复制
     <root url="file://$MODULE_DIR$/../maven-slf4j-provider/target/classes"/>
 </CLASSES>
 ```
+
 `maven-example/maven-example.iml`的整个文件内容可以参考`docresources/helper/maven-example.iml.bak.xml`文件。
 但是其实我们只关心上面代码片段中列出的`CLASSES`节点下的配置就可以了。
 
